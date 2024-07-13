@@ -60,20 +60,11 @@ void Book::updateBook()
     }
 }
 
-// void Book::removeBook(int id)
-// {
-//     for(Book &book : books) {
-//         if(book.id == id) {
-//             books.erase(book);
-//             break;
-//         }
-//     }
-// }
-
-void Book::removeBook(int id) {
-    books.erase(remove_if(books.begin(), books.end(), [id](const Book& book) {
-        return book.id == id;
-    }), books.end());
+void Book::removeBook(int id)
+{
+    books.erase(remove_if(books.begin(), books.end(), [id](const Book &book)
+                          { return book.id == id; }),
+                books.end());
 }
 
 void Book::displayAllBooks()
@@ -87,4 +78,48 @@ void Book::displayAllBooks()
             << ", Genre: " << book.genre
             << ", Availability: " << (book.isAvailable ? "Available" : "Not Available") << endl;
     }
+}
+
+Book *Book::getBookById(int id)
+{
+    for (Book &book : books)
+    {
+        if (book.id == id)
+            return &book;
+    }
+    return nullptr;
+}
+
+void Book::setAvailable(bool _available)
+{
+    isAvailable = _available;
+}
+
+bool Book::checkIfBookAvailable() const
+{
+    return isAvailable;
+}
+
+void Book::borrowBook()
+{
+    if (isAvailable)
+    {
+        isAvailable = false;
+        cout << "Book borrowed successfully!" << endl;
+    }
+    else
+    {
+        cout << "Sorry, the book is currently unavailable." << endl;
+    }
+}
+
+string Book::getTitle()
+{
+    return title;
+}
+
+void Book::returnBook()
+{
+    isAvailable = true;
+    cout << "Book returned successfully!" << endl;
 }

@@ -8,9 +8,12 @@ using namespace std;
 class Member
 {
 private:
-    vector<Book> borrowedBooks;
+    vector<Book*> borrowedBooks;
 
 public:
     void addMember();
     void removeMember();
+    void borrowBook();
+    void returnBook();
+    void viewBorrowedBooks();
 };

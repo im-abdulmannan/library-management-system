@@ -25,15 +25,6 @@ void User::removeUser(UserType role)
     int userId;
     cout << "Enter User Id to remove: ";
     cin >> userId;
-
-    // for (User &user : users)
-    // {
-    //     if (user.id == userId && user.role == role)
-    //     {
-    //         users.erase(user);
-    //         break;
-    //     }
-    // }
 }
 
 void User::displayAllUsers()

@@ -19,4 +19,10 @@ public:
     void updateBook();
     void removeBook(int id);
     static void displayAllBooks();
+    static Book* getBookById(int id);
+    void setAvailable(bool _available);
+    bool checkIfBookAvailable() const;
+    void borrowBook();
+    string getTitle();
+    void returnBook();
 };
