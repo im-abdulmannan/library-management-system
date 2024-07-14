@@ -35,3 +35,15 @@ void User::displayAllUsers()
         cout << "User Id: " << user.id << ", Name: " << user.name << ", Role: " << roleStr << endl;
     }
 }
+
+User *User::getUserById(int userId)
+{
+    for (User &user : users)
+    {
+        if (user.id == userId)
+        {
+            return &user;
+        }
+    }
+    return nullptr;
+}

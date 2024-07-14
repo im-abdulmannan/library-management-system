@@ -16,4 +16,5 @@ public:
     void borrowBook();
     void returnBook();
     void viewBorrowedBooks();
+    void searchBook();
 };

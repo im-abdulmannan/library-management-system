@@ -1,33 +1,56 @@
 #include "Librarian.h"
 #include "Book.h"
 
-void Librarian::addLibrarian()
+bool Librarian::authenticateLibrarian()
 {
-    User::addUser(UserType::LIBRARIAN);
-}
+    string _password;
+    cout << "Enter password: ";
+    cin >> _password;
 
-void Librarian::removeLibrarian()
-{
-    User::removeUser(UserType::LIBRARIAN);
+    return password == _password;
 }
 
 void Librarian::addBook()
 {
-    Book newBook;
-    newBook.addBook();
+    if (authenticateLibrarian())
+    {
+        Book newBook;
+        newBook.addBook();
+    }
+    else
+    {
+        cout << "Authentication failed" << endl;
+    }
 }
 
 void Librarian::updateBook()
 {
-    Book book;
-    book.updateBook();
+    if (authenticateLibrarian())
+    {
+        Book book;
+        int id;
+        cout << "Book ID you want to remove: ";
+        cin >> id;
+        book.updateBook(id);
+    }
+    else
+    {
+        cout << "Authentication failed" << endl;
+    }
 }
 
 void Librarian::removeBook()
 {
-    Book book;
-    int id;
-    cout << "Book ID you want to remove: ";
-    cin >> id;
-    book.removeBook(id);
+    if (authenticateLibrarian())
+    {
+        Book book;
+        int id;
+        cout << "Book ID you want to remove: ";
+        cin >> id;
+        book.removeBook(id);
+    }
+    else
+    {
+        cout << "Authentication failed" << endl;
+    }
 }

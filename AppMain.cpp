@@ -14,16 +14,15 @@ void AppMain::mainMenu()
     cout << "|\t                                           |" << endl;
     cout << "|\t0. Exit the Program                        |" << endl;
     cout << "|\t1. Create new Member                       |" << endl;
-    cout << "|\t2. Create new Librarian                    |" << endl;
-    cout << "|\t3. Add new Book (Librarian)                |" << endl;
-    cout << "|\t4. Remove Book (Librarian)                 |" << endl;
-    cout << "|\t5. Update Book (Librarian)                 |" << endl;
-    cout << "|\t6. Borrow Book (Member)                    |" << endl;
-    cout << "|\t7. Return Book (Member)                    |" << endl;
-    cout << "|\t8. View Borrowed Books (Member)            |" << endl;
-    cout << "|\t9. Search Book (Member)                    |" << endl;
-    cout << "|\t10. Display All Users                      |" << endl;
-    cout << "|\t11. Display Available Books                |" << endl;
+    cout << "|\t2. Add new Book (Librarian)                |" << endl;
+    cout << "|\t3. Remove Book (Librarian)                 |" << endl;
+    cout << "|\t4. Update Book (Librarian)                 |" << endl;
+    cout << "|\t5. Borrow Book (Member)                    |" << endl;
+    cout << "|\t6. Return Book (Member)                    |" << endl;
+    cout << "|\t7. View Borrowed Books (Member)            |" << endl;
+    cout << "|\t8. Search Book (Member)                    |" << endl;
+    cout << "|\t9. Display All Users                       |" << endl;
+    cout << "|\t10. Display Available Books                |" << endl;
     cout << "|\t                                           |" << endl;
     cout << "|__________________________________________________|" << endl;
 }
@@ -48,33 +47,30 @@ void AppMain::init()
                 member.addMember();
                 break;
             case 2:
-                librarian.addLibrarian();
-                break;
-            case 3:
                 librarian.addBook();
                 break;
-            case 4:
+            case 3:
                 librarian.removeBook();
                 break;
-            case 5:
+            case 4:
                 librarian.updateBook();
                 break;
-            case 6:
+            case 5:
                 member.borrowBook();
                 break;
-            case 7:
+            case 6:
                 member.returnBook();
                 break;
-            case 8:
+            case 7:
                 member.viewBorrowedBooks();
                 break;
-            // case 9:
-            //     searchBook();
-            //     break;
-            case 10:
+            case 8:
+                member.searchBook();
+                break;
+            case 9:
                 User::displayAllUsers();
                 break;
-            case 11:
+            case 10:
                 book.displayAllBooks();
                 break;
             default:

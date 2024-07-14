@@ -25,4 +25,10 @@ public:
     static void addUser(UserType role);
     static void removeUser(UserType role);
     static void displayAllUsers();
+    static User *getUserById(int userId);
+
+    int getId()
+    {
+        return id;
+    }
 };

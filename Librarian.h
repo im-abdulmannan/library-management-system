@@ -1,13 +1,15 @@
 #pragma once
+
+#include <string>
 #include "User.h"
 
 class Librarian
 {
 private:
-    /* data */
+    string password = "ADMIN_PASSWORD";
+    bool authenticateLibrarian();
+
 public:
-    void addLibrarian();
-    void removeLibrarian();
     void addBook();
     void updateBook();
     void removeBook();

@@ -18,6 +18,13 @@ Book::Book(int _id, string _title, string _author, string _genre)
     isAvailable = true;
 }
 
+bool Book::matchingCriteria(const string &searchTitle, const string &searchAuthor, const string &searchGenre) const
+{
+    return (searchTitle.empty() || title.find(searchTitle) != string::npos) &&
+           (searchAuthor.empty() || author.find(searchAuthor) != string::npos) &&
+           (searchGenre.empty() || genre.find(searchGenre) != string::npos);
+}
+
 Book::Book() : id(0), title(""), author(""), genre("") {}
 
 void Book::addBook()
@@ -38,15 +45,11 @@ void Book::addBook()
     books.push_back(Book(id, title, author, genre));
 }
 
-void Book::updateBook()
+void Book::updateBook(int _id)
 {
-    int id;
-    cout << "Enter book ID to update: ";
-    cin >> id;
-
     for (auto &book : books)
     {
-        if (book.id == id)
+        if (book.id == _id)
         {
             cout << "Enter updated book title: ";
             cin.ignore();
@@ -67,16 +70,19 @@ void Book::removeBook(int id)
                 books.end());
 }
 
+vector<Book> Book::getAllBooks()
+{
+    return books;
+}
+
 void Book::displayAllBooks()
 {
     for (const Book &book : books)
     {
-        cout
-            << "Book ID: " << book.id
-            << ", Title: " << book.title
-            << ", Author: " << book.author
-            << ", Genre: " << book.genre
-            << ", Availability: " << (book.isAvailable ? "Available" : "Not Available") << endl;
+        if (book.isAvailable)
+        {
+            book.display();
+        }
     }
 }
 
@@ -102,15 +108,7 @@ bool Book::checkIfBookAvailable() const
 
 void Book::borrowBook()
 {
-    if (isAvailable)
-    {
-        isAvailable = false;
-        cout << "Book borrowed successfully!" << endl;
-    }
-    else
-    {
-        cout << "Sorry, the book is currently unavailable." << endl;
-    }
+    isAvailable = false;
 }
 
 string Book::getTitle()
@@ -122,4 +120,17 @@ void Book::returnBook()
 {
     isAvailable = true;
     cout << "Book returned successfully!" << endl;
+}
+
+vector<Book> Book::searchBooks(const vector<Book> &books, const string &title, const string &author, const string &genre)
+{
+    vector<Book> result;
+    for (const auto &book : books)
+    {
+        if (book.matchingCriteria(title, author, genre))
+        {
+            result.push_back(book);
+        }
+    }
+    return result;
 }
