@@ -25,45 +25,57 @@ void Member::borrowBook()
         cout << "User not found." << endl;
         return;
     }
+
+    int bookId;
+    cout << "Enter the book ID you want to borrow: ";
+    cin >> bookId;
+    Book *book = Book::getBookById(bookId);
+    if (!book)
+    {
+        cout << "Book not found." << endl;
+        return;
+    }
+
+    bool isBookAvailable = book->checkIfBookAvailable();
+    if (isBookAvailable)
+    {
+        user->addBorrowedBook(book);
+        book->borrowBook();
+        cout << "Book borrowed successfully." << endl;
+    }
     else
     {
-        int bookId;
-        cout << "Enter the book ID you want to borrow: ";
-        cin >> bookId;
-
-        Book *book = Book::getBookById(bookId);
-        bool isBookAvailable = book->checkIfBookAvailable();
-
-        if (isBookAvailable)
-        {
-            borrowedBooks.push_back(book);
-            book->borrowBook();
-            cout << "Book borrowed successfully." << endl;
-        }
-        else
-        {
-            cout << "Sorry, the book is not available." << endl;
-        }
+        cout << "Sorry, the book is not available." << endl;
     }
 }
 
-void Member::returnBook()
-{
-    int id;
+void Member::returnBook() {
+    int userId;
+    cout << "Enter your user ID: ";
+    cin >> userId;
+
+    User* user = User::getUserById(userId);
+    if (!user) {
+        cout << "User not found." << endl;
+        return;
+    }
+
+    int bookId;
     cout << "Enter the book ID you want to return: ";
-    cin >> id;
+    cin >> bookId;
 
-    Book *book = Book::getBookById(id);
-    auto it = find(borrowedBooks.begin(), borrowedBooks.end(), book);
+    Book* book = Book::getBookById(bookId);
+    if (!book) {
+        cout << "Book not found." << endl;
+        return;
+    }
 
-    if (it != borrowedBooks.end())
-    {
-        borrowedBooks.erase(it);
+    auto it = find(user->borrowedBooks.begin(), user->borrowedBooks.end(), book);
+    if (it != user->borrowedBooks.end()) {
+        user->borrowedBooks.erase(it);
         book->returnBook();
         cout << "Book returned successfully." << endl;
-    }
-    else
-    {
+    } else {
         cout << "You have not borrowed this book." << endl;
     }
 }
@@ -81,20 +93,8 @@ void Member::viewBorrowedBooks()
         cout << "User not found." << endl;
         return;
     }
-    else
-    {
-        if (borrowedBooks.empty())
-        {
-            cout << "You have not borrowed any books yet." << endl;
-            return;
-        }
-
-        cout << "Borrowed Books:" << endl;
-        for (auto &book : borrowedBooks)
-        {
-            cout << book->getTitle() << endl;
-        }
-    }
+    
+    user->viewBorrowedBooks();
 }
 
 void Member::searchBook()

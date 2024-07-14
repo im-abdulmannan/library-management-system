@@ -47,3 +47,23 @@ User *User::getUserById(int userId)
     }
     return nullptr;
 }
+
+void User::addBorrowedBook(Book *book)
+{
+    borrowedBooks.push_back(book);
+}
+
+void User::viewBorrowedBooks() const
+{
+    if (borrowedBooks.empty())
+    {
+        cout << "No borrowed books." << endl;
+        return;
+    }
+
+    cout << "Borrowed Books:" << endl;
+    for (const auto &book : borrowedBooks)
+    {
+        book->display();
+    }
+}

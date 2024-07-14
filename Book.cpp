@@ -119,7 +119,6 @@ string Book::getTitle()
 void Book::returnBook()
 {
     isAvailable = true;
-    cout << "Book returned successfully!" << endl;
 }
 
 vector<Book> Book::searchBooks(const vector<Book> &books, const string &title, const string &author, const string &genre)
