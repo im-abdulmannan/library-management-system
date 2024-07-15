@@ -1,6 +1,7 @@
 #include "Member.h"
 #include <algorithm>
 #include "Book.h"
+#include "Librarian.h"
 
 map<int, Member> Member::members;
 
@@ -41,10 +42,19 @@ bool Member::isMemberExist(int id)
 
 void Member::displayAllMembers()
 {
-    cout << "\n\n==========Display All Members==========" << endl;
-    for (auto member : members)
+    Librarian librarian;
+
+    if (librarian.authenticateLibrarian())
     {
-        cout << "ID: " << member.first << ", Name: " << member.second.name << ", Role: " << member.second.role << endl;
+        cout << "\n\n==========Display All Members==========" << endl;
+        for (auto member : members)
+        {
+            cout << "ID: " << member.first << ", Name: " << member.second.name << ", Role: " << member.second.role << endl;
+        }
+    }
+    else
+    {
+        cout << "Authentication failed" << endl;
     }
 }
 
