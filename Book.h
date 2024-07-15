@@ -1,7 +1,10 @@
 #pragma once
+
 #include <string>
 #include <iostream>
+#include <vector>
 using namespace std;
+
 class Book
 {
 private:
@@ -28,7 +31,12 @@ public:
     void borrowBook();
     string getTitle();
     void returnBook();
-    static vector<Book> searchBooks(const vector<Book> &books, const string &title, const string &author, const string &genre);
+    /// @brief Searches for books based on the specified criteria: title, author, or genre.
+    /// @param title Partial or complete title of the book to search for. Pass an empty string to ignore this criterion.
+    /// @param author Partial or complete author name of the book to search for. Pass an empty string to ignore this criterion.
+    /// @param genre Partial or complete genre of the book to search for. Pass an empty string to ignore this criterion.
+    /// @return A vector containing the details of books that match the specified search criteria.
+    static vector<Book> searchBooks(const string &title, const string &author, const string &genre);
 
     void display() const;
 };

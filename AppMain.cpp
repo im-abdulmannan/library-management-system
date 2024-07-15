@@ -1,6 +1,5 @@
 #include <iostream>
 #include "AppMain.h"
-#include "User.h"
 #include "Book.h"
 #include "Member.h"
 #include "Librarian.h"
@@ -21,7 +20,7 @@ void AppMain::mainMenu()
     cout << "|\t6. Return Book (Member)                    |" << endl;
     cout << "|\t7. View Borrowed Books (Member)            |" << endl;
     cout << "|\t8. Search Book (Member)                    |" << endl;
-    cout << "|\t9. Display All Users (Librarian)           |" << endl;
+    cout << "|\t9. Display All Members (Librarian)         |" << endl;
     cout << "|\t10. Display Available Books                |" << endl;
     cout << "|\t                                           |" << endl;
     cout << "|__________________________________________________|" << endl
@@ -68,7 +67,7 @@ void AppMain::init()
                 member.searchBook();
                 break;
             case 9:
-                User::displayAllUsers();
+                member.displayAllMembers();
                 break;
             case 10:
                 Book::displayAllAvailableBooks();

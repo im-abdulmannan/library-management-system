@@ -100,10 +100,6 @@ void Book::removeBook(int id)
     {
         cout << "Book not found" << endl;
     }
-
-    // books.erase(remove_if(books.begin(), books.end(), [id](const Book &book)
-    //                       { return book.id == id; }),
-    //             books.end());
 }
 
 vector<Book> Book::getAllBooks()
@@ -157,7 +153,7 @@ void Book::returnBook()
     isAvailable = true;
 }
 
-vector<Book> Book::searchBooks(const vector<Book> &books, const string &title, const string &author, const string &genre)
+vector<Book> Book::searchBooks(const string &title, const string &author, const string &genre)
 {
     vector<Book> result;
     for (const auto &book : books)

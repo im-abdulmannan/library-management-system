@@ -7,7 +7,7 @@ bool Librarian::authenticateLibrarian()
     cout << "Enter password: ";
     cin >> _password;
 
-    return password == _password;
+    return _password == password;
 }
 
 void Librarian::addBook()

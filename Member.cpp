@@ -1,59 +1,71 @@
 #include "Member.h"
 #include <algorithm>
 #include "Book.h"
-#include "User.h"
+
+map<int, Member> Member::members;
+
+Member::Member(int _id, string _name)
+{
+    id = _id;
+    name = _name;
+    role = "Member";
+    vector<int> borrowedBooks(0);
+}
 
 void Member::addMember()
 {
-    User::addUser(UserType::MEMBER);
+    cout << "\n\n==========Creating Member==========" << endl;
+    int id;
+    string name;
+    cout << "Enter member id: ";
+    cin >> id;
+    cin.ignore();
+
+    if (isMemberExist(id))
+    {
+        cout << "Member with ID " << id << " is already exist" << endl;
+        return;
+    }
+
+    cout << "Enter name: ";
+    getline(cin, name);
+
+    members[id] = Member(id, name);
+    cout << "Member added successfully!" << endl;
 }
 
-// void Member::borrowBook()
-// {
-//     int userId;
-//     cout << "Enter your user ID: ";
-//     cin >> userId;
+bool Member::isMemberExist(int id)
+{
+    return members.find(id) != members.end();
+}
 
-//     User *user = User::getUserById(userId);
-//     if (!user)
-//     {
-//         cout << "User not found." << endl;
-//         return;
-//     }
+void Member::displayAllMembers()
+{
+    cout << "\n\n==========Display All Members==========" << endl;
+    for (auto member : members)
+    {
+        cout << "ID: " << member.first << ", Name: " << member.second.name << ", Role: " << member.second.role << endl;
+    }
+}
 
-//     int bookId;
-//     cout << "Enter the book ID you want to borrow: ";
-//     cin >> bookId;
-//     Book *book = Book::getBookById(bookId);
-//     if (!book)
-//     {
-//         cout << "Book not found." << endl;
-//         return;
-//     }
-
-//     bool isBookAvailable = book->checkIfBookAvailable();
-//     if (isBookAvailable)
-//     {
-//         user->addBorrowedBook(book);
-//         book->borrowBook();
-//         cout << "Book borrowed successfully." << endl;
-//     }
-//     else
-//     {
-//         cout << "Sorry, the book is not available." << endl;
-//     }
-// }
+Member Member::getMemberById(int id)
+{
+    if (members.count(id))
+    {
+        return members[id];
+    }
+    return Member();
+}
 
 void Member::borrowBook()
 {
-    int userId;
+    int memberId;
     cout << "Enter your user ID: ";
-    cin >> userId;
+    cin >> memberId;
 
-    User *user = User::getUserById(userId);
-    if (!user)
+    if (!isMemberExist(memberId))
     {
-        cout << "User not found." << endl;
+        cout << "Member not found!!!" << endl;
         return;
     }
 
@@ -70,7 +82,7 @@ void Member::borrowBook()
 
     if (book->checkIfBookAvailable())
     {
-        user->addBorrowedBook(book);
+        members[memberId].borrowedBooks.push_back(bookId);
         book->borrowBook();
         cout << "Book borrowed successfully." << endl;
     }
@@ -82,14 +94,20 @@ void Member::borrowBook()
 
 void Member::returnBook()
 {
-    int userId;
+    int memberId;
     cout << "Enter your user ID: ";
-    cin >> userId;
+    cin >> memberId;
 
-    User *user = User::getUserById(userId);
-    if (!user)
+    if (!isMemberExist(memberId))
     {
-        cout << "User not found." << endl;
+        cout << "Member not found!!!" << endl;
+        return;
+    }
+
+    Member &member = members[memberId];
+    if (member.borrowedBooks.empty())
+    {
+        cout << "You have not borrowed any books yet." << endl;
         return;
     }
 
@@ -104,44 +122,52 @@ void Member::returnBook()
         return;
     }
 
-    user->returnBorrowedBook(book);
-    book->returnBook();
-    cout << "Book returned successfully!!!" << endl;
+    auto it = find(member.borrowedBooks.begin(), member.borrowedBooks.end(), bookId);
+    if (it != member.borrowedBooks.end())
+    {
+        member.borrowedBooks.erase(it);
+        book->returnBook();
+        cout << "Book returned successfully!!!" << endl;
+    }
+    else
+    {
+        cout << "Book not found in borrowed books." << endl;
+    }
 }
 
 void Member::viewBorrowedBooks()
 {
-    int userId;
+    int memberId;
     cout << "Enter your user ID: ";
-    cin >> userId;
+    cin >> memberId;
 
-    User *user = User::getUserById(userId);
-    if (!user)
+    if (!isMemberExist(memberId))
     {
-        cout << "User not found." << endl;
+        cout << "Member not found!!!" << endl;
         return;
     }
 
-    const auto &borrowedBooks = user->getBorrowedBooks(); // Get user's borrowed books
+    Member &member = members[memberId];
 
-    if (borrowedBooks.empty())
+    if (member.borrowedBooks.empty())
     {
         cout << "You have not borrowed any books yet." << endl;
         return;
     }
 
-    cout << "Borrowed Books:" << endl;
-    for (const auto &book : borrowedBooks)
+    cout << "\n\n==========Borrowed Books==========" << endl;
+    for (int bookId : member.borrowedBooks)
     {
-        book->display(); // Display book details
+        Book *book = Book::getBookById(bookId);
+        if (book)
+        {
+            book->display();
+        }
     }
 }
 
 void Member::searchBook()
 {
-    Book book;
-    vector<Book> library = book.getAllBooks();
-
     string searchTitle, searchAuthor, searchGenre;
     cin.ignore();
     cout << "Enter title to search (or leave empty): ";
@@ -151,7 +177,7 @@ void Member::searchBook()
     cout << "Enter genre to search (or leave empty): ";
     getline(cin, searchGenre);
 
-    vector<Book> matchingBooks = Book::searchBooks(library, searchTitle, searchAuthor, searchGenre);
+    vector<Book> matchingBooks = Book::searchBooks(searchTitle, searchAuthor, searchGenre);
 
     cout << "Search Result: " << matchingBooks.size() << endl;
     for (const Book &book : matchingBooks)
