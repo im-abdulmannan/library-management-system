@@ -9,6 +9,8 @@ using namespace std;
 // Initialize the static member
 vector<Book> Book::books;
 
+Book::Book() : id(0), title(""), author(""), genre("") {}
+
 Book::Book(int _id, string _title, string _author, string _genre)
 {
     id = _id;
@@ -25,8 +27,6 @@ bool Book::matchingCriteria(const string &searchTitle, const string &searchAutho
            (searchGenre.empty() || genre.find(searchGenre) != string::npos);
 }
 
-Book::Book() : id(0), title(""), author(""), genre("") {}
-
 void Book::addBook()
 {
     int id;
@@ -35,6 +35,16 @@ void Book::addBook()
     cout << "Enter book ID: ";
     cin >> id;
     cin.ignore();
+
+    for (Book &book : books)
+    {
+        if (book.id == id)
+        {
+            cout << "Book ID already exists" << endl;
+            return;
+        }
+    }
+
     cout << "Enter book title: ";
     getline(cin, title);
     cout << "Enter book author: ";
@@ -51,6 +61,11 @@ void Book::updateBook(int _id)
     {
         if (book.id == _id)
         {
+            if (!book.checkIfBookAvailable())
+            {
+                cout << "Book is currently borrowed, cannot update." << endl;
+                return;
+            }
             cout << "Enter updated book title: ";
             cin.ignore();
             getline(cin, book.title);
@@ -65,9 +80,30 @@ void Book::updateBook(int _id)
 
 void Book::removeBook(int id)
 {
-    books.erase(remove_if(books.begin(), books.end(), [id](const Book &book)
-                          { return book.id == id; }),
-                books.end());
+
+    auto it = find_if(books.begin(), books.end(), [id](const Book &book)
+                      { return book.id == id; });
+
+    if (it != books.end())
+    {
+        if (it->checkIfBookAvailable())
+        {
+            books.erase(it);
+            cout << "Book removed successfully" << endl;
+        }
+        else
+        {
+            cout << "Book is currently borrowed, cannot remove." << endl;
+        }
+    }
+    else
+    {
+        cout << "Book not found" << endl;
+    }
+
+    // books.erase(remove_if(books.begin(), books.end(), [id](const Book &book)
+    //                       { return book.id == id; }),
+    //             books.end());
 }
 
 vector<Book> Book::getAllBooks()
@@ -75,11 +111,11 @@ vector<Book> Book::getAllBooks()
     return books;
 }
 
-void Book::displayAllBooks()
+void Book::displayAllAvailableBooks()
 {
     for (const Book &book : books)
     {
-        if (book.isAvailable)
+        if (book.checkIfBookAvailable())
         {
             book.display();
         }
@@ -132,4 +168,9 @@ vector<Book> Book::searchBooks(const vector<Book> &books, const string &title, c
         }
     }
     return result;
+}
+
+void Book::display() const
+{
+    cout << "ID: " << id << ", Title: " << title << ", Author: " << author << ", Genre: " << genre << endl;
 }

@@ -7,9 +7,9 @@ class Librarian
 {
 private:
     string password = "ADMIN_PASSWORD";
-    bool authenticateLibrarian();
 
 public:
+    bool authenticateLibrarian();
     void addBook();
     void updateBook();
     void removeBook();

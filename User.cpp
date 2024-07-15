@@ -1,4 +1,6 @@
 #include "User.h"
+#include "Librarian.h"
+#include <algorithm>
 
 // Initialize the static member
 vector<User> User::users;
@@ -13,6 +15,15 @@ void User::addUser(UserType role)
     cin >> id;
     cin.ignore();
 
+    for (auto user : users)
+    {
+        if (user.id == id)
+        {
+            cout << "User ID already exists" << endl;
+            return;
+        }
+    }
+
     cout << "Enter User Name: ";
     getline(cin, name);
 
@@ -20,25 +31,25 @@ void User::addUser(UserType role)
     users.push_back(newUser);
 }
 
-void User::removeUser(UserType role)
-{
-    int userId;
-    cout << "Enter User Id to remove: ";
-    cin >> userId;
-}
-
 void User::displayAllUsers()
 {
-    for (const User &user : users)
+    Librarian library;
+    if (library.authenticateLibrarian())
     {
-        string roleStr = (user.role == UserType::LIBRARIAN) ? "LIBRARIAN" : "MEMBER";
-        cout << "User Id: " << user.id << ", Name: " << user.name << ", Role: " << roleStr << endl;
+        for (const User &user : users)
+        {
+            cout << "User Id: " << user.id << ", Name: " << user.name << endl;
+        }
+    }
+    else
+    {
+        cout << "Authentication failed" << endl;
     }
 }
 
 User *User::getUserById(int userId)
 {
-    for (User &user : users)
+    for (auto& user : users)
     {
         if (user.id == userId)
         {
@@ -51,6 +62,19 @@ User *User::getUserById(int userId)
 void User::addBorrowedBook(Book *book)
 {
     borrowedBooks.push_back(book);
+}
+
+void User::returnBorrowedBook(Book *book)
+{
+    auto it = find(borrowedBooks.begin(), borrowedBooks.end(), book);
+    if (it != borrowedBooks.end())
+    {
+        borrowedBooks.erase(it);
+    }
+    else
+    {
+        cout << "Book not found in borrowed books." << endl;
+    }
 }
 
 void User::viewBorrowedBooks() const

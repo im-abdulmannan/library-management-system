@@ -21,17 +21,17 @@ void AppMain::mainMenu()
     cout << "|\t6. Return Book (Member)                    |" << endl;
     cout << "|\t7. View Borrowed Books (Member)            |" << endl;
     cout << "|\t8. Search Book (Member)                    |" << endl;
-    cout << "|\t9. Display All Users                       |" << endl;
+    cout << "|\t9. Display All Users (Librarian)           |" << endl;
     cout << "|\t10. Display Available Books                |" << endl;
     cout << "|\t                                           |" << endl;
-    cout << "|__________________________________________________|" << endl;
+    cout << "|__________________________________________________|" << endl
+         << endl;
 }
 
 void AppMain::init()
 {
     Member member;
     Librarian librarian;
-    Book book;
     while (true)
     {
         mainMenu();
@@ -71,7 +71,7 @@ void AppMain::init()
                 User::displayAllUsers();
                 break;
             case 10:
-                book.displayAllBooks();
+                Book::displayAllAvailableBooks();
                 break;
             default:
                 cout << "Invalid choice. Please try again." << endl;

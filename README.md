@@ -13,6 +13,7 @@ The Library Management System (LMS) is designed to manage the daily operations o
 The MVP of the Library Management System will include the following features:
 
 #### 3.1 User Roles
+
 1. *Librarian*:
     - Manages book inventory (add, remove, update books).
     - Searches for books in the library.

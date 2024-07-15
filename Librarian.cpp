@@ -29,7 +29,7 @@ void Librarian::updateBook()
     {
         Book book;
         int id;
-        cout << "Book ID you want to remove: ";
+        cout << "Book ID you want to update: ";
         cin >> id;
         book.updateBook(id);
     }
