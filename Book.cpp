@@ -47,33 +47,45 @@ void Book::addBook()
 
     cout << "Enter book title: ";
     getline(cin, title);
+
+    for (Book &book : books)
+    {
+        if (book.title == title)
+        {
+            cout << "Book with the same Title is already exists" << endl;
+            return;
+        }
+    }
+
     cout << "Enter book author: ";
     getline(cin, author);
     cout << "Enter book genre: ";
     getline(cin, genre);
 
     books.push_back(Book(id, title, author, genre));
+    cout << "Book Added Successfully" << endl;
 }
 
 void Book::updateBook(int _id)
 {
-    for (auto &book : books)
+    auto it = find_if(books.begin(), books.end(), [_id](const Book &book)
+                      { return book.id == _id; });
+    if (it != books.end())
     {
-        if (book.id == _id)
+        if (it->checkIfBookAvailable())
         {
-            if (!book.checkIfBookAvailable())
-            {
-                cout << "Book is currently borrowed, cannot update." << endl;
-                return;
-            }
             cout << "Enter updated book title: ";
             cin.ignore();
-            getline(cin, book.title);
+            getline(cin, it->title);
             cout << "Enter updated book author: ";
-            getline(cin, book.author);
+            getline(cin, it->author);
             cout << "Enter updated book genre: ";
-            getline(cin, book.genre);
-            break;
+            getline(cin, it->genre);
+        }
+        else
+        {
+            cout << "Book is currently borrowed, cannot update." << endl;
+            return;
         }
     }
 }
